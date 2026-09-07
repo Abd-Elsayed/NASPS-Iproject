@@ -1,0 +1,1 @@
+.task-title-link { display: block; color: var(--ink); font-weight: 800; text-decoration: none; }.task-title-link:hover { color: var(--blue); }.task-title-link + small { display: block; margin-top: 4px; color: var(--muted); font-size: 9px; }

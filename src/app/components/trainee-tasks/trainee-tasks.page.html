@@ -1,0 +1,8 @@
+<div class="page-heading"><div><span class="eyebrow">YOUR WORK</span><h1>My Tasks</h1><p>Track assignments, deadlines and submissions.</p></div></div>
+<section class="panel table-panel">
+  <div class="toolbar"><select aria-label="Filter task status" [ngModel]="status()" (ngModelChange)="status.set($event)"><option>All</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Needs Changes</option></select><select aria-label="Filter task priority" [ngModel]="priority()" (ngModelChange)="priority.set($event)"><option>All</option><option>High</option><option>Medium</option><option>Low</option></select><label class="search-box"><span>⌕</span><input [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="Search tasks..."></label></div>
+  <div class="table-wrap"><table><thead><tr><th>#</th><th>Task</th><th>Priority</th><th>Due Date</th><th>Status</th></tr></thead><tbody>
+    @for (task of filtered(); track task.id; let i = $index) { <tr><td>{{ i+1 }}</td><td><a class="task-title-link" [routerLink]="['/trainee/tasks', task.id]">{{ task.title }}</a><small>Open the title to submit your work</small></td><td><span class="priority" [attr.data-priority]="task.priority">{{ task.priority }}</span></td><td>{{ task.dueDate | date:'MMM d, y' }}</td><td><span class="status" [attr.data-status]="task.status">{{ task.status }}</span></td></tr> }
+    @empty { <tr><td colspan="5" class="empty">You have no tasks in this view.</td></tr> }
+  </tbody></table></div>
+</section>

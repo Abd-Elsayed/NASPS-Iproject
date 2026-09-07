@@ -1,0 +1,18 @@
+<div class="page-heading"><div><span class="eyebrow">ACCOUNT</span><h1>Profile</h1><p>Keep your personal information up to date.</p></div></div>
+<section class="panel profile-panel">
+  <div class="profile-card"><span class="profile-avatar">{{ source.fullName.slice(0,2).toUpperCase() }}</span><h2>{{ source.fullName }}</h2><p>{{ source.role }}</p><button class="secondary-button" type="button">Change Photo</button></div>
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <div class="tabs"><button class="active" type="button">Personal Info</button><button type="button">Change Password</button>@if (role === 'admin') { <button type="button">Activity Log</button> }</div>
+    <div class="form-grid">
+      <label>Full Name<input formControlName="fullName">@if (form.controls.fullName.touched && form.controls.fullName.invalid) { <small class="field-error">Enter at least 2 characters.</small> }</label>
+      <label>Email<input type="email" formControlName="email">@if (form.controls.email.touched && form.controls.email.invalid) { <small class="field-error">Enter a valid email address.</small> }</label>
+      <label>Phone Number<input formControlName="phone">@if (form.controls.phone.touched && form.controls.phone.invalid) { <small class="field-error">Enter a complete Egyptian mobile number starting with 010, 011, 012, or 015.</small> }</label>
+      <label>Role<input formControlName="role"></label>
+      <label>Department<select formControlName="department">@for (department of departments; track department) { <option [value]="department">{{ department }}</option> }</select>@if (form.controls.department.touched && form.controls.department.invalid) { <small class="field-error">Select a department.</small> }</label>
+      <label>Join Date<input type="date" formControlName="joinDate"></label>
+      <label>University<select formControlName="university">@for (university of universities; track university) { <option [value]="university">{{ university }}</option> }</select>@if (form.controls.university.touched && form.controls.university.invalid) { <small class="field-error">Select a university.</small> }</label>
+      @if (form.controls.university.value === 'Other') { <label>Other University<input formControlName="otherUniversity" placeholder="Write university name">@if (form.controls.otherUniversity.touched && form.controls.otherUniversity.invalid) { <small class="field-error">Write the university name.</small> }</label> }
+    </div>
+    <div class="form-actions">@if (role === 'admin') { <button class="secondary-button warning" type="button" (click)="resetDemo()">Reset Demo Data</button> }<button class="primary-button" type="submit">Update Profile</button></div>
+  </form>
+</section>

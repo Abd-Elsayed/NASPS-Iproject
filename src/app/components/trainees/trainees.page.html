@@ -1,0 +1,26 @@
+<div class="page-heading">
+  <div><span class="eyebrow">TEAM</span><h1>Trainees</h1><p>Manage trainee profiles, internship programs and departments.</p></div>
+  <a class="primary-button" routerLink="/admin/trainees/new">＋ Add Trainee</a>
+</div>
+<section class="panel table-panel">
+  <div class="toolbar">
+    <label class="search-box"><span>⌕</span><input [ngModel]="search()" (ngModelChange)="search.set($event)" placeholder="Search trainees..."></label>
+    <select aria-label="Filter by status" [ngModel]="status()" (ngModelChange)="status.set($event)"><option>All</option><option>Active</option><option>Inactive</option></select>
+    <span class="record-count">{{ filtered().length }} trainees</span>
+  </div>
+  <div class="table-wrap"><table>
+    <thead><tr><th>#</th><th>Name</th><th>Login ID</th><th>Email</th><th>Internship Program</th><th>Department</th><th>University</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody>
+      @for (trainee of filtered(); track trainee.id; let i = $index) {
+        <tr>
+          <td>{{ i + 1 }}</td>
+          <td><div class="name-cell"><span class="mini-avatar">{{ trainee.name.slice(0, 2).toUpperCase() }}</span><strong>{{ trainee.name }}</strong></div></td>
+          <td><strong>{{ auth.usernameFor(trainee.id) }}</strong><br><small>ID: {{ trainee.id }}</small></td>
+          <td>{{ trainee.email }}</td><td>{{ trainee.internshipProgram || 'Not assigned' }}</td><td>{{ trainee.department }}</td><td>{{ trainee.university || 'Not specified' }}</td>
+          <td><button class="status" [attr.data-status]="trainee.status" (click)="toggle(trainee.id, trainee.status)">{{ trainee.status }}</button></td>
+          <td><div class="actions"><a [routerLink]="['/admin/trainees', trainee.id, 'edit']" title="Edit trainee">✎</a><button type="button" (click)="remove(trainee.id, trainee.email)" title="Remove trainee">⌫</button></div></td>
+        </tr>
+      } @empty { <tr><td colspan="9" class="empty">No trainees match your search.</td></tr> }
+    </tbody>
+  </table></div>
+</section>

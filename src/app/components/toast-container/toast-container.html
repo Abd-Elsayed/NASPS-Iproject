@@ -1,0 +1,9 @@
+<section class="toast-stack" aria-live="polite" aria-label="Notifications">
+  @for (item of toast.toasts(); track item.id) {
+    <article class="toast" [attr.data-type]="item.type" role="status">
+      <span class="toast-icon">{{ item.type === 'success' ? '✓' : item.type === 'error' ? '!' : item.type === 'warning' ? '⚠' : 'i' }}</span>
+      <p>{{ item.message }}</p>
+      <button type="button" (click)="toast.dismiss(item.id)" aria-label="Dismiss message">×</button>
+    </article>
+  }
+</section>

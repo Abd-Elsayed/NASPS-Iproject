@@ -1,0 +1,26 @@
+<section class="panel coach-panel">
+  <div class="coach-heading">
+    <span class="coach-icon" aria-hidden="true">✦</span>
+    <div>
+      <span class="eyebrow">AI LEARNING COACH</span>
+      <h2>Your recommended learning path</h2>
+      <p>Suggestions personalized for <strong>{{ internshipProgram() || 'your internship' }}</strong>.</p>
+    </div>
+    <span class="personalized-badge">Personalized</span>
+  </div>
+
+  <div class="course-list">
+    @for (course of courses(); track course.title; let step = $index) {
+      <article class="course-card">
+        <span class="step-number">{{ step + 1 }}</span>
+        <div class="course-copy">
+          <div class="course-meta"><span>{{ course.level }}</span><span>•</span><span>{{ course.duration }}</span></div>
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.reason }}</p>
+        </div>
+      </article>
+    }
+  </div>
+
+  <p class="coach-note"><span>i</span> Start with step 1, then move through the path in order. Recommendations update when your Internship Program changes.</p>
+</section>
