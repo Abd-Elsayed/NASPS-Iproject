@@ -1,6 +1,0 @@
-@Nasps.Api_HostAddress = http://localhost:5222
-
-GET {{Nasps.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

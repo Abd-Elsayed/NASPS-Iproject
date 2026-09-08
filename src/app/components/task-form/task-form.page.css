@@ -1,4 +1,0 @@
-:host { display: block; }
-.attachment-field input[type="file"] { padding: 8px; cursor: pointer; }
-.selected-file { padding: 8px 10px; border-radius: 7px; color: var(--blue-dark); background: var(--light-blue); font-size: 10px; font-weight: 700; word-break: break-all; }
-.file-help { color: var(--muted); font-size: 9px; font-weight: 500; }

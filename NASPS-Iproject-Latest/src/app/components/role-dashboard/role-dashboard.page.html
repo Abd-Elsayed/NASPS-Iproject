@@ -1,0 +1,48 @@
+@if (isAdmin()) {
+  <div class="page-heading"><div><span class="eyebrow">OVERVIEW</span><h1>Welcome back, {{ auth.identity().name }}</h1><p>{{ auth.identity().roleLabel }} · here is what is happening with your trainee team.</p></div></div>
+  <section class="stats-grid">
+    @for (stat of adminStats(); track stat.label) {
+      <article class="stat-card"><span class="stat-icon" [class]="stat.tone">{{ stat.label === 'Trainees' ? '♙' : stat.label === 'Tasks' ? '✓' : stat.label === 'Pending Tasks' ? '◷' : '●' }}</span><div><span>{{ stat.label }}</span><strong>{{ stat.value }}</strong><small>{{ stat.hint }}</small></div></article>
+    }
+  </section>
+  <section class="dashboard-grid">
+    <article class="panel chart-panel">
+      <div class="panel-title"><div><h2>Tasks Overview</h2><p>Monthly activity for the current cycle</p></div><span class="legend"><i></i> Completed <i></i> Pending</span></div>
+      <div class="chart" aria-label="Illustrative monthly task chart">
+        @for (height of [34, 48, 42, 68, 75, 88]; track $index) { <div class="chart-column"><span class="bar completed" [style.height.%]="height"></span><span class="bar pending" [style.height.%]="Math.max(18, height - 22 + ($index % 2) * 16)"></span><small>{{ ['Apr','May','Jun','Jul','Aug','Sep'][$index] }}</small></div> }
+      </div>
+    </article>
+    <article class="panel recent-panel">
+      <div class="panel-title"><div><h2>Recent Tasks</h2><p>Latest activity and due dates</p></div><a routerLink="/admin/tasks">View all</a></div>
+      <div class="activity-list">
+        @for (task of recentAdminTasks(); track task.id) { <a [routerLink]="['/admin/tasks', task.id, 'review']"><span class="activity-icon">✓</span><span><strong>{{ task.title }}</strong><small>Due {{ task.dueDate | date:'MMM d, y' }}</small></span><span class="status" [attr.data-status]="task.status">{{ task.status }}</span></a> }
+      </div>
+    </article>
+  </section>
+} @else {
+  <section class="welcome-banner">
+    <div><span class="eyebrow">TRAINEE DASHBOARD</span><h1>Welcome back, {{ trainee()?.name || 'Trainee' }}</h1><p>Stay focused on your next task and keep developing the skills for your internship.</p></div>
+    <div class="program-card"><span>Internship Program</span><strong>{{ trainee()?.internshipProgram || 'Not assigned yet' }}</strong></div>
+  </section>
+  <section class="stats-grid trainee-stats">
+    <article class="stat-card"><span class="stat-icon blue">✓</span><div><span>Assigned Tasks</span><strong>{{ assignedTasks().length }}</strong><small>Your complete workload</small></div></article>
+    <article class="stat-card"><span class="stat-icon orange">◷</span><div><span>Pending</span><strong>{{ pendingTasks().length }}</strong><small>Waiting to be started</small></div></article>
+    <article class="stat-card"><span class="stat-icon violet">↻</span><div><span>In Progress</span><strong>{{ inProgressTasks().length }}</strong><small>Active or needs changes</small></div></article>
+    <article class="stat-card"><span class="stat-icon green">●</span><div><span>Completed</span><strong>{{ completedTasks().length }}</strong><small>{{ progress() }}% overall progress</small></div></article>
+  </section>
+  <section class="focus-grid">
+    <article class="panel focus-card">
+      <div class="panel-title"><div><span class="eyebrow">RECOMMENDED NEXT ACTION</span><h2>What should I start with?</h2></div><span class="ai-chip">✦ Smart priority</span></div>
+      @if (nextTask(); as task) {
+        <div class="focus-task"><div class="focus-topline"><span class="priority" [attr.data-priority]="task.priority">{{ task.priority }} priority</span><span class="status" [attr.data-status]="task.status">{{ task.status }}</span></div><h3>{{ task.title }}</h3><p>{{ nextTaskReason() }}</p><div class="focus-footer"><span>Due {{ task.dueDate | date:'MMM d, y' }}</span><a class="primary-button" [routerLink]="['/trainee/tasks', task.id]">Start now →</a></div></div>
+      } @else { <div class="all-done"><span>✓</span><div><h3>All tasks completed</h3><p>Great work. Use your learning path below to keep improving.</p></div></div> }
+    </article>
+    <article class="panel progress-card">
+      <div class="panel-title"><div><span class="eyebrow">YOUR PROGRESS</span><h2>Internship completion</h2></div><strong>{{ progress() }}%</strong></div>
+      <div class="progress-track"><span [style.width.%]="progress()"></span></div><p>{{ completedTasks().length }} of {{ assignedTasks().length }} assigned tasks completed.</p>
+      <div class="mini-task-list">@for (task of upcomingTasks(); track task.id) { <a [routerLink]="['/trainee/tasks', task.id]"><span class="task-dot" [attr.data-status]="task.status"></span><span><strong>{{ task.title }}</strong><small>{{ task.dueDate | date:'MMM d' }} · {{ task.status }}</small></span><span>›</span></a> } @empty { <span class="empty-upcoming">No open deadlines.</span> }</div>
+      <a class="text-button all-tasks-link" routerLink="/trainee/tasks">Open all tasks →</a>
+    </article>
+  </section>
+  <app-ai-course-suggestions [internshipProgram]="trainee()?.internshipProgram || ''" />
+}

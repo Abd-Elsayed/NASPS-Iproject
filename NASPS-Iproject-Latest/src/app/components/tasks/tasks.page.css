@@ -1,0 +1,3 @@
+:host { display: block; }
+
+.icon-link.danger:hover { color: #c0392b; border-color: #e6a99f; }

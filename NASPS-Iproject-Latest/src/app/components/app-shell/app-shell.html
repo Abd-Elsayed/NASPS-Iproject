@@ -1,0 +1,39 @@
+<div class="app-frame">
+  <aside class="sidebar" [class.open]="open()">
+    <a class="brand" [routerLink]="role === 'admin' ? '/admin/dashboard' : '/trainee/dashboard'" (click)="closeMenu()">
+      <img src="/assets/nasps-logo-horizontal.png" alt="NASPS Technology and Innovation">
+    </a>
+
+    <nav aria-label="Main navigation">
+      @for (item of navItems(); track item.link) {
+        <a [routerLink]="item.link" routerLinkActive="active" (click)="closeMenu()">
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span>{{ item.label }}</span>
+          @if (item.label === 'Notifications' && unread()) { <span class="nav-badge">{{ unread() }}</span> }
+        </a>
+      }
+    </nav>
+
+    <button class="logout" type="button" (click)="logout()">
+      <span class="nav-icon">↪</span> Logout
+    </button>
+  </aside>
+
+  @if (open()) { <button class="scrim" aria-label="Close menu" (click)="closeMenu()"></button> }
+
+  <main class="main-panel">
+    <header class="topbar">
+      <button class="menu-button" type="button" aria-label="Open menu" (click)="open.set(!open())">☰</button>
+      <div class="top-user">
+        <span class="avatar">{{ initials() }}</span>
+        <div>
+          <strong>{{ auth.identity().name }}</strong>
+          <span>{{ auth.identity().roleLabel }}</span>
+        </div>
+      </div>
+    </header>
+    <section class="route-content">
+      <router-outlet />
+    </section>
+  </main>
+</div>

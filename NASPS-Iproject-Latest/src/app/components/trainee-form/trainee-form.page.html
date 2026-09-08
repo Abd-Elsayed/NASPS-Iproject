@@ -1,0 +1,37 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">TEAM</span>
+    <h1>{{ createdAccess() ? 'Trainee Login Created' : id ? 'Edit Trainee' : 'Add New Trainee' }}</h1>
+    <p>{{ createdAccess() ? 'Give these one-time credentials to the trainee.' : id ? 'Update the trainee information below.' : 'The admin creates the trainee account and receives its first-login credentials.' }}</p>
+  </div>
+</div>
+
+@if (createdAccess(); as access) {
+  <section class="panel credentials-panel">
+    <div class="credentials-success"><span>✓</span><div><strong>Account created successfully</strong><p>The trainee verifies their email with a one-time code, then changes the temporary password on first sign in.</p></div></div>
+    <dl class="credentials-list">
+      <div><dt>Trainee ID</dt><dd>{{ access.traineeId }}</dd></div>
+      <div><dt>Username</dt><dd>{{ access.username }}</dd></div>
+      <div><dt>Temporary Password</dt><dd>{{ access.temporaryPassword }}</dd></div>
+    </dl>
+    <div class="credentials-warning"><strong>Important:</strong> copy these credentials now and send them securely to the trainee.</div>
+    <div class="form-actions"><button class="secondary-button" type="button" (click)="copyCredentials()">Copy Credentials</button><button class="primary-button" type="button" (click)="finishCreation()">Done</button></div>
+  </section>
+} @else {
+  <form class="panel form-panel" [formGroup]="form" (ngSubmit)="save()" novalidate>
+    @if (!id) { <div class="temporary-password-note"><strong>Admin-created access</strong><span>After saving, the system generates a Trainee ID, username, and one-time password for the admin.</span></div> }
+    <div class="form-grid">
+      <label>Full Name<input formControlName="name" placeholder="Enter full name">@if (form.controls.name.touched && form.controls.name.invalid) { <small class="field-error">Enter at least 2 characters.</small> }</label>
+      <label>Email<input type="email" formControlName="email" placeholder="name@example.com" autocomplete="email">@if (form.controls.email.touched && form.controls.email.hasError('required')) { <small class="field-error">Email is required.</small> } @else if (form.controls.email.touched && form.controls.email.hasError('email')) { <small class="field-error">Enter a valid email address.</small> } @else if (form.controls.email.hasError('duplicate')) { <small class="field-error">This email already belongs to another trainee.</small> }</label>
+      <label>Internship Cohort<select formControlName="internshipProgram"><option value="">Select cohort</option>@for (program of internshipPrograms; track program) { <option [value]="program">{{ program }}</option> }</select>@if (form.controls.internshipProgram.touched && form.controls.internshipProgram.invalid) { <small class="field-error">Select a cohort.</small> }</label>
+      <label>Egyptian Mobile Number<input type="tel" formControlName="phone" placeholder="010 1234 5678 or +20 10 1234 5678" autocomplete="tel">@if (form.controls.phone.touched && form.controls.phone.invalid) { <small class="field-error">Enter a complete Egyptian mobile number starting with 010, 011, 012, or 015.</small> }</label>
+      <label>Department<select formControlName="department"><option value="">Select department</option>@for (department of departments(); track department) { <option [value]="department">{{ department }}</option> }</select>@if (lockedDepartment()) { <small class="file-help">You can only add trainees to your own department ({{ lockedDepartment() }}).</small> } @else if (form.controls.department.touched && form.controls.department.invalid) { <small class="field-error">Select a department.</small> }</label>
+      <label>Join Date<input type="date" formControlName="joinDate">@if (form.controls.joinDate.touched && form.controls.joinDate.invalid) { <small class="field-error">Join date is required.</small> }</label>
+      @if (id) { <label>Status<select formControlName="status"><option>Active</option><option>Inactive</option></select></label> }
+      <label>University<select formControlName="university"><option value="">Select Egyptian university</option>@for (university of universities; track university) { <option [value]="university">{{ university }}</option> }</select>@if (form.controls.university.touched && form.controls.university.invalid) { <small class="field-error">Select a university.</small> }</label>
+      @if (form.controls.university.value === 'Other') { <label>Other University<input formControlName="otherUniversity" placeholder="Write university name">@if (form.controls.otherUniversity.touched && form.controls.otherUniversity.invalid) { <small class="field-error">Write the university name.</small> }</label> }
+    </div>
+    @if (submitted && form.invalid) { <p class="form-error">The trainee could not be saved. Check the highlighted fields.</p> }
+    <div class="form-actions"><a class="secondary-button" routerLink="/admin/trainees">Cancel</a><button class="primary-button" type="submit">{{ id ? 'Update Trainee' : 'Create Login' }}</button></div>
+  </form>
+}
