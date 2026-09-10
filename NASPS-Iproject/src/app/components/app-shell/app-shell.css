@@ -1,0 +1,32 @@
+.app-frame { min-height: 100vh; background: var(--surface-soft); }
+.sidebar { position: fixed; inset: 0 auto 0 0; width: 240px; padding: 28px 18px 20px; background: #fff; border-right: 1px solid var(--border); z-index: 20; display: flex; flex-direction: column; }
+.brand { display: flex; align-items: center; min-height: 74px; padding: 0 4px 22px; color: var(--ink); text-decoration: none; }
+.brand img { display: block; width: 198px; height: auto; max-height: 66px; object-fit: contain; object-position: left center; }
+nav { display: grid; gap: 7px; }
+nav a, .logout { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 9px; color: #526174; background: transparent; border: 0; text-decoration: none; font: inherit; font-weight: 600; cursor: pointer; }
+nav a:hover, .logout:hover { background: var(--light-blue); color: var(--blue); }
+nav a.active { color: #fff; background: var(--blue); box-shadow: 0 8px 18px rgba(32, 96, 144, .2); }
+.nav-icon { width: 20px; text-align: center; font-size: 18px; }
+.logout { margin-top: auto; }
+.main-panel { min-height: 100vh; margin-left: 240px; }
+.topbar { height: 74px; padding: 0 34px; display: flex; align-items: center; justify-content: flex-end; background: #fff; border-bottom: 1px solid var(--border); }
+.top-user { display: flex; align-items: center; gap: 10px; }
+.top-user div { display: grid; font-size: 13px; line-height: 1.25; }
+.top-user span:last-child { color: var(--muted); font-size: 11px; }
+.avatar { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; background: linear-gradient(145deg, var(--blue-dark), var(--blue)); font-size: 11px; font-weight: 800; }
+.avatar { overflow: hidden; }
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.route-content { padding: 30px 34px 44px; }
+.menu-button, .scrim { display: none; }
+
+@media (max-width: 850px) {
+  .sidebar { transform: translateX(-102%); transition: transform .22s ease; }
+  .sidebar.open { transform: translateX(0); }
+  .main-panel { margin-left: 0; }
+  .topbar { justify-content: space-between; padding: 0 20px; }
+  .menu-button { display: block; border: 0; background: transparent; font-size: 24px; color: var(--ink); cursor: pointer; }
+  .scrim { display: block; position: fixed; inset: 0; z-index: 15; border: 0; background: rgba(11, 25, 47, .36); }
+  .route-content { padding: 22px 18px 36px; }
+}
+
+.nav-badge { margin-left: auto; min-width: 18px; height: 18px; padding: 0 5px; border-radius: 9px; background: var(--blue); color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center; }

@@ -1,0 +1,33 @@
+<div class="page-heading"><div><span class="eyebrow">ASSIGNMENT</span><h1>Task Details</h1><p>Review the brief and submit your work.</p></div><a class="secondary-button" routerLink="/trainee/tasks">← My Tasks</a></div>
+@if (task(); as task) {
+  <section class="detail-grid">
+    <article class="panel detail-summary"><h2>{{ task.title }}</h2><span class="status" [attr.data-status]="task.status">{{ task.status }}</span><dl><div><dt>Assigned By</dt><dd>Admin User</dd></div><div><dt>Due Date</dt><dd>{{ task.dueDate | date:'longDate' }}</dd></div><div><dt>Priority</dt><dd><span class="priority" [attr.data-priority]="task.priority">{{ task.priority }}</span></dd></div></dl><button class="secondary-button" type="button" (click)="start()">Mark In Progress</button></article>
+    <article class="panel detail-body">
+      <div><span class="field-label">Description</span><p>{{ task.description }}</p></div>
+      <div><span class="field-label">Task Attachment</span>
+        <app-attachment [name]="task.attachment" [size]="task.attachmentSize" placeholder="No attachment" [downloadable]="true" (download)="downloadAssignment()" />
+      </div>
+      <div><span class="field-label">Instructions</span><p>{{ task.instructions || 'Complete the task and submit your findings.' }}</p></div>
+      <section class="submission-box">
+        <div><span class="field-label">Submit your work</span><p>Upload one supported file, add a link, or use both.</p></div>
+        <label class="upload-zone">Attachment
+          <input type="file" [accept]="accept" (change)="onFileSelected($event)">
+          <span>{{ selectedFile?.name || task.submissionName || 'Choose PDF, image, document, archive, text or code file' }}</span>
+          @if (selectedFile) { <small>{{ selectedFile.type || 'File' }} · {{ formatFileSize(selectedFile.size) }}</small> }
+        </label>
+        <label>Submission Link (optional)<input type="url" [(ngModel)]="submissionLink" placeholder="https://github.com/... or https://drive.google.com/..."></label>
+        @if (submissionError) { <p class="form-error" role="alert">{{ submissionError }}</p> }
+        @if (task.submissionName || task.submission) {
+          <div class="saved-submission"><strong>Current submission:</strong>
+            <app-attachment [name]="task.submissionName || task.submission" [size]="task.submissionSize" [downloadable]="!!task.submissionName" (download)="downloadSubmission()" [removable]="true" (remove)="removeSubmission()" />
+            @if (task.submission?.startsWith('http')) { <a [href]="task.submission" target="_blank" rel="noopener noreferrer">Open submitted link ↗</a> }
+          </div>
+        }
+        <div class="form-actions"><button class="primary-button" type="button" (click)="submit()">Submit Attachment</button></div>
+      </section>
+      @if (task.adminReview) {
+        <section class="submission-box admin-feedback"><div><span class="field-label">Admin Feedback</span><p>{{ task.adminReview }}</p></div></section>
+      }
+    </article>
+  </section>
+} @else { <section class="panel empty">Task not found or it is not assigned to your trainee account.</section> }

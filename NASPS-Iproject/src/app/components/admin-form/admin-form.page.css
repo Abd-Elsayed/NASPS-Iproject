@@ -1,0 +1,13 @@
+.permission-note { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 22px; padding: 14px 16px; border: 1px solid #cfe1ec; border-radius: 10px; background: var(--light-blue); color: var(--blue-dark); }
+.permission-note > span { display: grid; place-items: center; flex: 0 0 32px; height: 32px; border-radius: 8px; color: #fff; background: var(--blue); }
+.permission-note strong { font-size: 12px; }
+.permission-note p { margin: 4px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.password-field { display: flex; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: #fff; }
+.password-field:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(32, 96, 144, .1); }
+.password-field input { flex: 1; border: 0; box-shadow: none; }
+.password-field button { padding: 0 13px; border: 0; color: var(--blue); background: transparent; font-size: 11px; font-weight: 800; cursor: pointer; }
+.password-rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; align-content: center; padding: 12px 14px; border-radius: 8px; background: #f7f9fb; color: var(--muted); font-size: 10px; }
+.password-rules span::before { content: '○'; margin-right: 6px; }
+.password-rules span.valid { color: var(--green); font-weight: 700; }
+.password-rules span.valid::before { content: '✓'; }
+@media (max-width: 650px) { .password-rules { grid-template-columns: 1fr; } }

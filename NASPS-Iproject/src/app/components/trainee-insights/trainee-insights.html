@@ -1,0 +1,15 @@
+<section class="panel insight-panel" aria-labelledby="insights-heading">
+  <div class="insight-heading"><div><span class="eyebrow">ADMIN AI ASSISTANT</span><h2 id="insights-heading">Trainee progress insights</h2><p>Analyze saved task status and admin review data without changing the trainee record.</p></div><button class="primary-button" type="button" (click)="analyze()" [disabled]="loading()">{{ loading() ? 'Analyzing…' : insights() ? 'Refresh insights' : 'Analyze trainee' }}</button></div>
+  @if (error()) { <p class="insight-error" role="alert"><strong>Insights unavailable.</strong> {{ error() }}</p> }
+  @if (insights(); as result) {
+    <div class="summary"><span>AI summary</span><h3>{{ result.summary }}</h3><p>{{ result.progressAssessment }}</p></div>
+    <div class="insight-grid">
+      <article><h3>Strengths</h3><ul>@for (item of result.strengths; track item) { <li>{{ item }}</li> } @empty { <li>Not enough evidence yet.</li> }</ul></article>
+      <article><h3>Areas to improve</h3><ul>@for (item of result.areasForImprovement; track item) { <li>{{ item }}</li> } @empty { <li>Not enough evidence yet.</li> }</ul></article>
+      <article><h3>Recommendations</h3><ul>@for (item of result.recommendations; track item) { <li>{{ item }}</li> }</ul></article>
+      <article><h3>Next steps</h3><ul>@for (item of result.nextSteps; track item) { <li>{{ item }}</li> }</ul></article>
+      <article class="attention"><h3>Attention indicators</h3><ul>@for (item of result.attentionIndicators; track item) { <li>{{ item }}</li> } @empty { <li>No evidence-based warning was identified.</li> }</ul></article>
+    </div>
+    <p class="disclaimer">AI output is advisory. Verify it against the trainee's work before making administrative decisions.</p>
+  }
+</section>
