@@ -1,0 +1,104 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">SUPER ADMIN</span>
+    <h1>Add Administrator</h1>
+    <p>
+      Create a department administrator. The server sends the verification code to that
+      administrator's email.
+    </p>
+  </div>
+</div>
+
+<form class="panel form-panel" [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <div class="permission-note">
+    <span>◆</span>
+    <div>
+      <strong>Super Admin permission</strong>
+      <p>
+        Only a Super Admin can create another administrator. Department admins create trainee
+        accounts instead.
+      </p>
+    </div>
+  </div>
+
+  <div class="form-grid">
+    <label
+      >Full Name
+      <input formControlName="name" placeholder="Enter full name" autocomplete="name" />
+      @if (form.controls.name.touched && form.controls.name.invalid) {
+        <small class="field-error">Enter at least 2 characters.</small>
+      }
+    </label>
+    <label
+      >NASPS Email
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="name@nasps.org.eg"
+        autocomplete="email"
+      />
+      @if (form.controls.email.touched && form.controls.email.invalid) {
+        <small class="field-error">Enter a valid NASPS email address.</small>
+      }
+    </label>
+    <label
+      >Department
+      <select formControlName="department">
+        <option value="">Select department</option>
+        @for (department of departments; track department) {
+          <option [value]="department">{{ department }}</option>
+        }
+      </select>
+      @if (form.controls.department.touched && form.controls.department.invalid) {
+        <small class="field-error">Select a department.</small>
+      }
+    </label>
+    <label
+      >Temporary Password
+      <span class="password-field">
+        <input
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Create a strong password"
+          autocomplete="new-password"
+        />
+        <button type="button" (click)="showPassword = !showPassword">
+          {{ showPassword ? 'Hide' : 'Show' }}
+        </button>
+      </span>
+    </label>
+    <div class="password-rules">
+      <span [class.valid]="passwordHasMinimumLength()">At least 8 characters</span>
+      <span [class.valid]="passwordHasUpperAndLower()">Uppercase and lowercase</span>
+      <span [class.valid]="passwordHasNumber()">One number</span>
+      <span [class.valid]="passwordHasSpecialCharacter()">One special character</span>
+    </div>
+    <label
+      >Confirm Password
+      <input
+        type="password"
+        formControlName="confirm"
+        placeholder="Repeat the password"
+        autocomplete="new-password"
+      />
+      @if (form.controls.confirm.dirty && !passwordsMatch()) {
+        <small class="field-error">Passwords do not match yet.</small>
+      }
+    </label>
+  </div>
+
+  @if (serverError()) {
+    <p class="form-error" role="alert">{{ serverError() }}</p>
+  }
+  @if (createdEmail()) {
+    <p class="success-message" role="status">
+      Administrator created. A verification code was sent to {{ createdEmail() }}.
+    </p>
+  }
+  <div class="form-actions">
+    <a class="secondary-button" routerLink="/admin/dashboard">Cancel</a>
+    <button class="primary-button" type="submit" [disabled]="saving()">
+      {{ saving() ? 'Creating…' : 'Create Administrator' }}
+    </button>
+  </div>
+</form>

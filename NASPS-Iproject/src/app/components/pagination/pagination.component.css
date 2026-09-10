@@ -1,8 +1,0 @@
-:host { display: block; }
-.pagination { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px 20px; border-top: 1px solid var(--border); background: #fff; }
-.page-summary { color: var(--muted); font-size: 10px; }
-.page-buttons { display: flex; align-items: center; gap: 5px; }
-.page-buttons button { display: grid; place-items: center; min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 7px; color: #526174; background: #fff; font-size: 11px; font-weight: 800; cursor: pointer; }
-.page-buttons button:hover:not(:disabled), .page-buttons button.active { color: #fff; border-color: var(--blue); background: var(--blue); }
-.page-buttons button:disabled { cursor: not-allowed; opacity: .38; }
-@media (max-width: 560px) { .pagination { align-items: flex-start; flex-direction: column; }.page-buttons { width: 100%; overflow-x: auto; padding-bottom: 2px; } }

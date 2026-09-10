@@ -1,0 +1,130 @@
+<section class="panel coach-panel">
+  <div class="coach-heading">
+    <span class="coach-icon" aria-hidden="true">✦</span>
+    <div>
+      <span class="eyebrow">AI LEARNING COACH</span>
+      <h2>Your recommended learning path</h2>
+      <p>
+        Suggestions personalized for <strong>{{ internshipProgram() || 'your internship' }}</strong
+        >.
+      </p>
+    </div>
+    <button
+      class="primary-button ai-generate"
+      type="button"
+      (click)="generatePersonalizedPath()"
+      [disabled]="loading() || !traineeId()"
+    >
+      {{
+        loading() ? 'Building path…' : learningPath() ? 'Regenerate AI path' : 'Generate AI path'
+      }}
+    </button>
+  </div>
+
+  @if (error()) {
+    <div class="ai-state ai-error" role="alert">
+      <strong>AI path unavailable</strong><span>{{ error() }}</span>
+    </div>
+  }
+  @if (learningPath(); as path) {
+    <section class="generated-path" aria-label="AI-generated personalized learning path">
+      <div class="path-summary">
+        <div>
+          <span class="eyebrow">GENERATED FROM YOUR TASK PROGRESS</span>
+          <p>{{ path.summary }}</p>
+        </div>
+        <div class="task-progress" aria-label="Assigned task completion percentage">
+          <span>TASK COMPLETION</span>
+          <strong>{{ path.progressPercent }}%</strong>
+          <small>This is based on internship tasks, not completed courses.</small>
+        </div>
+      </div>
+      <div class="ai-recommendations">
+        @for (item of path.recommendations; track item.order) {
+          <article class="ai-recommendation">
+            <span class="step-number">{{ item.order }}</span>
+            <div>
+              <div class="course-meta">
+                <span>{{ item.difficulty }}</span
+                ><span>•</span><span>{{ item.estimatedHours }} hours</span>
+              </div>
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.description }}</p>
+              <small><strong>Why now:</strong> {{ item.reason }}</small>
+              <div class="skill-tags">
+                @for (skill of item.skills; track skill) {
+                  <span>{{ skill }}</span>
+                }
+              </div>
+              <div class="course-actions ai-course-actions">
+                <a
+                  class="provider-link coursera"
+                  [href]="courseraUrl(item.title)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  [attr.aria-label]="'Find ' + item.title + ' courses on Coursera'"
+                  >Coursera <span>↗</span></a
+                >
+                <a
+                  class="provider-link udemy"
+                  [href]="udemyUrl(item.title)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  [attr.aria-label]="'Find ' + item.title + ' courses on Udemy'"
+                  >Udemy <span>↗</span></a
+                >
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+      <p class="ai-disclaimer">
+        AI recommendations are advisory. Review them against your internship goals.
+      </p>
+    </section>
+  }
+
+  <div class="starter-heading">
+    <span class="eyebrow">PROGRAM STARTER RESOURCES</span>
+    <p>These resources remain available even when the AI provider is not configured.</p>
+  </div>
+
+  <div class="course-list">
+    @for (course of courses(); track course.title; let step = $index) {
+      <article class="course-card">
+        <span class="step-number">{{ step + 1 }}</span>
+        <div class="course-copy">
+          <div class="course-meta">
+            <span>{{ course.level }}</span
+            ><span>•</span><span>{{ course.duration }}</span>
+          </div>
+          <h3>{{ course.title }}</h3>
+          <p>{{ course.reason }}</p>
+          <div class="course-actions">
+            <a
+              class="provider-link coursera"
+              [href]="courseraUrl(course.title)"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="'Find ' + course.title + ' courses on Coursera'"
+              >Coursera <span>↗</span></a
+            >
+            <a
+              class="provider-link udemy"
+              [href]="udemyUrl(course.title)"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="'Find ' + course.title + ' courses on Udemy'"
+              >Udemy <span>↗</span></a
+            >
+          </div>
+        </div>
+      </article>
+    }
+  </div>
+
+  <p class="coach-note">
+    <span>i</span> Start with step 1, then move through the path in order. Use Coursera or Udemy to
+    compare available courses, ratings and prices.
+  </p>
+</section>

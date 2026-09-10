@@ -1,0 +1,80 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">ACCOUNT</span>
+    <h1>Profile</h1>
+    <p>Your account information.</p>
+  </div>
+</div>
+<section class="panel profile-panel">
+  <div class="profile-card">
+    <span class="profile-avatar">
+      @if (photoPreview()) {
+        <img [src]="photoPreview()" alt="Profile photo preview" />
+      } @else {
+        {{ (me()?.name || 'NA').slice(0, 2).toUpperCase() }}
+      }
+    </span>
+    <h2>{{ me()?.name || auth.identity().name }}</h2>
+    <p>{{ auth.identity().roleLabel }}</p>
+    <input
+      #photoInput
+      class="photo-input"
+      type="file"
+      accept="image/jpeg,image/png,image/webp,image/gif"
+      (change)="onPhotoSelected($event)"
+    />
+    <button class="secondary-button" type="button" (click)="photoInput.click()">
+      {{ photoPreview() ? 'Change Photo' : 'Upload Photo' }}
+    </button>
+    @if (photoPreview()) {
+      <button class="secondary-button warning" type="button" (click)="removePhoto()">
+        Remove Photo
+      </button>
+    }
+    <small class="photo-help">Images only · JPG, PNG, WEBP or GIF · Maximum 2 MB</small>
+    @if (photoFileName()) {
+      <small class="photo-name">{{ photoFileName() }}</small>
+    }
+  </div>
+  <form [formGroup]="form" (ngSubmit)="save()" novalidate>
+    <div class="profile-section-title">
+      <span class="eyebrow">PERSONAL INFORMATION</span>
+      <p>Update your name and phone{{ isTrainee ? ' and university' : '' }} below.</p>
+    </div>
+    <div class="form-grid">
+      <label
+        >Full Name<input formControlName="name" />
+        @if (form.controls.name.touched && form.controls.name.invalid) {
+          <small class="field-error">Enter at least 2 characters.</small>
+        }
+      </label>
+      <label>Email<input type="email" formControlName="email" /></label>
+      <label
+        >Phone Number<input formControlName="phone" />
+        @if (form.controls.phone.touched && form.controls.phone.invalid) {
+          <small class="field-error"
+            >Enter a complete Egyptian mobile number starting with 010, 011, 012, or 015.</small
+          >
+        }
+      </label>
+      <label>Role<input formControlName="roleLabel" /></label>
+      <label>Department<input formControlName="department" /></label>
+      <label>Join Date<input type="date" formControlName="joinDate" /></label>
+      @if (isTrainee) {
+        <label
+          >University<select formControlName="university">
+            @for (university of universities; track university) {
+              <option [value]="university">{{ university }}</option>
+            }
+          </select>
+          @if (form.controls.university.touched && form.controls.university.invalid) {
+            <small class="field-error">Select a university.</small>
+          }
+        </label>
+      }
+    </div>
+    <div class="form-actions">
+      <button class="primary-button" type="submit">Update Profile</button>
+    </div>
+  </form>
+</section>
