@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { AdminDashboardSummary } from '../../models/models';
-import { API_BASE_URL } from '../../core/api-url';
+import { API_BASE_URL } from '../../services/api-url';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardService {

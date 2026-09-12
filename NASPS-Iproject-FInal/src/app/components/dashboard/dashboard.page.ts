@@ -1,7 +1,7 @@
 import { Component, computed } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { DataService } from '../../core/data.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-dashboard-page',

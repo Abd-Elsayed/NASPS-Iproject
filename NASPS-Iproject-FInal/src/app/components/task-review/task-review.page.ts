@@ -2,8 +2,8 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { DataService } from '../../core/data.service';
-import { ToastService } from '../../core/toast.service';
+import { DataService } from '../../services/data.service';
+import { ToastService } from '../../services/toast.service';
 import { AttachmentComponent } from '../attachment/attachment.component';
 
 @Component({

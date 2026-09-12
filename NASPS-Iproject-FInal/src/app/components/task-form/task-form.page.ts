@@ -1,12 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { DataService } from '../../core/data.service';
-import { ToastService } from '../../core/toast.service';
+import { DataService } from '../../services/data.service';
+import { ToastService } from '../../services/toast.service';
 import { TaskPriority } from '../../models/models';
 import { AttachmentComponent } from '../attachment/attachment.component';
 import { AiGeneratedTask } from '../../models/ai.models';
-import { AiService } from '../../core/ai.service';
+import { AiService } from '../../services/ai.service';
 import { finalize } from 'rxjs';
 
 @Component({

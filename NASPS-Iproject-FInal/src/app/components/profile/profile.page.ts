@@ -1,10 +1,10 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { AuthService } from '../../core/auth.service';
-import { DataService } from '../../core/data.service';
-import { ToastService } from '../../core/toast.service';
-import { ValidationService } from '../../core/validation.service';
-import { UniversityService } from '../../core/university.service';
+import { AuthService } from '../../services/auth.service';
+import { DataService } from '../../services/data.service';
+import { ToastService } from '../../services/toast.service';
+import { ValidationService } from '../../services/validation.service';
+import { UniversityService } from '../../services/university.service';
 
 @Component({ selector: 'app-profile-page', imports: [ReactiveFormsModule], templateUrl: './profile.page.html', styleUrl: './profile.page.css' })
 export class ProfilePage {

@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { DataService } from '../../core/data.service';
-import { ToastService } from '../../core/toast.service';
+import { DataService } from '../../services/data.service';
+import { ToastService } from '../../services/toast.service';
 import { PaginationComponent } from '../pagination/pagination.component';
 
 @Component({ selector: 'app-notifications-page', imports: [PaginationComponent], templateUrl: './notifications.page.html', styleUrl: './notifications.page.css' })

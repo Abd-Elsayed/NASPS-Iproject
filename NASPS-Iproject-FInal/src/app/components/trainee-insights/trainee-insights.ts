@@ -1,9 +1,9 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { TraineeInsights as TraineeInsightsModel } from '../../models/ai.models';
-import { AiService } from '../../core/ai.service';
-import { ToastService } from '../../core/toast.service';
-import { DataService } from '../../core/data.service';
+import { AiService } from '../../services/ai.service';
+import { ToastService } from '../../services/toast.service';
+import { DataService } from '../../services/data.service';
 
 @Component({
   selector: 'app-trainee-insights',

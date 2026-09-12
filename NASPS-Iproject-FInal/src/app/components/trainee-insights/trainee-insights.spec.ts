@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { AiService } from '../../core/ai.service';
+import { AiService } from '../../services/ai.service';
 import { TraineeInsights } from './trainee-insights';
 
 describe('TraineeInsights', () => {

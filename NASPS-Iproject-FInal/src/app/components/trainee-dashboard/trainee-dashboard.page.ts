@@ -2,8 +2,8 @@ import { DatePipe } from '@angular/common';
 import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TaskPriority, TrainingTask } from '../../models/models';
-import { AuthService } from '../../core/auth.service';
-import { DataService } from '../../core/data.service';
+import { AuthService } from '../../services/auth.service';
+import { DataService } from '../../services/data.service';
 import { AiCourseSuggestions } from '../ai-course-suggestions/ai-course-suggestions';
 
 @Component({

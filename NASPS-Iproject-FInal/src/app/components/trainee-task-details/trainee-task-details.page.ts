@@ -2,9 +2,9 @@ import { Component, computed, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { AuthService } from '../../core/auth.service';
-import { DataService } from '../../core/data.service';
-import { ToastService } from '../../core/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { DataService } from '../../services/data.service';
+import { ToastService } from '../../services/toast.service';
 import { AttachmentComponent } from '../attachment/attachment.component';
 
 @Component({

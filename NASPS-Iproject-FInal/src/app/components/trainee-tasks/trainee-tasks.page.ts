@@ -2,8 +2,8 @@ import { Component, computed, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { DataService } from '../../core/data.service';
-import { AuthService } from '../../core/auth.service';
+import { DataService } from '../../services/data.service';
+import { AuthService } from '../../services/auth.service';
 import { TaskPriority, TaskStatus } from '../../models/models';
 import { PaginationComponent } from '../pagination/pagination.component';
 

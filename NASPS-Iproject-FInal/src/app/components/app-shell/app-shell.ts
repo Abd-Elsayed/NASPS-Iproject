@@ -1,8 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AuthService } from '../../core/auth.service';
-import { DataService } from '../../core/data.service';
-import { ToastService } from '../../core/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { DataService } from '../../services/data.service';
+import { ToastService } from '../../services/toast.service';
 
 interface NavItem { label: string; icon: string; link: string; }
 

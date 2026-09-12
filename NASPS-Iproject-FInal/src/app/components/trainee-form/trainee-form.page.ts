@@ -1,12 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { AuthService, TraineeAccess } from '../../core/auth.service';
-import { DataService } from '../../core/data.service';
+import { AuthService, TraineeAccess } from '../../services/auth.service';
+import { DataService } from '../../services/data.service';
 import { InternshipProgramService } from './internship-program.service';
-import { ToastService } from '../../core/toast.service';
-import { UniversityService } from '../../core/university.service';
-import { ValidationService } from '../../core/validation.service';
+import { ToastService } from '../../services/toast.service';
+import { UniversityService } from '../../services/university.service';
+import { ValidationService } from '../../services/validation.service';
 import { TraineeStatus } from '../../models/models';
 import { TraineeInsights } from '../trainee-insights/trainee-insights';
 
