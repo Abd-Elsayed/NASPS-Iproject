@@ -1,0 +1,327 @@
+:host {
+  display: block;
+}
+.coach-panel {
+  overflow: hidden;
+  position: relative;
+}
+.coach-panel::before {
+  content: '';
+  position: absolute;
+  top: -80px;
+  right: -55px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(32, 96, 144, 0.13), transparent 68%);
+  pointer-events: none;
+}
+.coach-heading {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+.coach-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: #fff;
+  background: linear-gradient(145deg, var(--blue-dark), #2a83c2);
+  box-shadow: 0 8px 18px rgba(32, 96, 144, 0.22);
+  font-size: 21px;
+}
+.coach-heading h2 {
+  margin: 3px 0 4px;
+  font-size: 17px;
+}
+.coach-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+.coach-heading p strong {
+  color: var(--blue);
+}
+.personalized-badge {
+  padding: 7px 10px;
+  border-radius: 999px;
+  color: var(--blue);
+  background: var(--light-blue);
+  font-size: 9px;
+  font-weight: 800;
+}
+.ai-generate {
+  min-width: 138px;
+  border: 0;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ai-generate:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.ai-state {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  font-size: 10px;
+}
+.ai-error {
+  color: #8b2d2d;
+  border: 1px solid #f1bcbc;
+  background: #fff5f5;
+}
+.generated-path {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid #b9d8ed;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #f6fbff, #fff);
+}
+.path-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 14px;
+}
+.path-summary p {
+  margin: 5px 0 0;
+  color: #536479;
+  font-size: 10px;
+  line-height: 1.55;
+}
+.task-progress {
+  display: grid;
+  flex: 0 0 190px;
+  justify-items: end;
+  gap: 2px;
+  text-align: right;
+}
+.task-progress > span {
+  color: var(--blue);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+}
+.task-progress > strong {
+  color: var(--blue);
+  font-size: 21px;
+}
+.task-progress > small {
+  max-width: 190px;
+  color: var(--muted);
+  font-size: 8px;
+  line-height: 1.35;
+}
+.ai-recommendations {
+  display: grid;
+  gap: 9px;
+}
+.ai-recommendation {
+  display: grid;
+  grid-template-columns: 31px 1fr;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fff;
+}
+.ai-recommendation h3 {
+  margin: 0 0 5px;
+  font-size: 12px;
+}
+.ai-recommendation p,
+.ai-recommendation small {
+  display: block;
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.55;
+}
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+.skill-tags span {
+  padding: 4px 7px;
+  border-radius: 999px;
+  color: var(--blue-dark);
+  background: var(--light-blue);
+  font-size: 8px;
+  font-weight: 700;
+}
+.ai-course-actions {
+  margin-top: 10px;
+}
+.ai-disclaimer {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 8px;
+}
+.starter-heading {
+  margin: 4px 0 12px;
+}
+.starter-heading p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+}
+.course-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.course-card {
+  display: grid;
+  grid-template-columns: 31px 1fr;
+  gap: 10px;
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: linear-gradient(145deg, #fff, #f9fcff);
+}
+.course-card:first-child {
+  border-color: #a9cee9;
+  box-shadow: 0 7px 18px rgba(32, 96, 144, 0.08);
+}
+.step-number {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  border-radius: 9px;
+  color: var(--blue);
+  background: var(--light-blue);
+  font-size: 11px;
+  font-weight: 800;
+}
+.course-card:first-child .step-number {
+  color: #fff;
+  background: var(--blue);
+}
+.course-copy {
+  min-width: 0;
+}
+.course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 7px;
+  color: var(--blue);
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+.course-copy h3 {
+  margin: 0 0 7px;
+  font-size: 12px;
+  line-height: 1.35;
+}
+.course-copy p {
+  margin: 0;
+  color: #6f7c8d;
+  font-size: 9px;
+  line-height: 1.55;
+}
+.course-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+.provider-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: 800;
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.provider-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 12px rgba(22, 79, 125, 0.1);
+}
+.provider-link.coursera {
+  color: #0755a5;
+  border-color: #bad5ef;
+  background: #f2f8ff;
+}
+.provider-link.udemy {
+  color: #6d28a8;
+  border-color: #dac8eb;
+  background: #faf6ff;
+}
+.provider-link span {
+  font-size: 11px;
+}
+.coach-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 15px 0 0;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.5;
+}
+.coach-note span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 18px;
+  height: 18px;
+  border: 1px solid #bcd1e1;
+  border-radius: 50%;
+  color: var(--blue);
+  font-weight: 800;
+}
+@media (max-width: 820px) {
+  .course-list {
+    grid-template-columns: 1fr;
+  }
+  .coach-heading {
+    grid-template-columns: 44px minmax(0, 1fr);
+  }
+  .personalized-badge,
+  .ai-generate {
+    grid-column: 2;
+    width: fit-content;
+  }
+  .path-summary {
+    align-items: flex-start;
+  }
+  .task-progress {
+    flex-basis: 160px;
+  }
+}
+@media (max-width: 480px) {
+  .coach-heading {
+    grid-template-columns: 1fr;
+  }
+  .coach-icon,
+  .coach-heading > div,
+  .ai-generate {
+    grid-column: 1;
+  }
+  .ai-generate {
+    width: 100%;
+  }
+}

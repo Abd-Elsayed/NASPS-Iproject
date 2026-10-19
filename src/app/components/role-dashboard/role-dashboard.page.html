@@ -1,0 +1,356 @@
+@if (isAdmin()) {
+  <div class="page-heading admin-heading">
+    <div>
+      <span class="eyebrow">{{
+        isSuperAdmin() ? 'EXECUTIVE OVERVIEW' : 'DEPARTMENT OVERVIEW'
+      }}</span>
+      <h1>
+        {{ isSuperAdmin() ? 'Organization dashboard' : 'Welcome back, ' + auth.identity().name }}
+      </h1>
+      <p>
+        {{
+          isSuperAdmin()
+            ? 'Live trainee and internship insights across NASPS.'
+            : 'Live activity for ' +
+              (dashboard.summary()?.scopeLabel || auth.identity().department) +
+              '.'
+        }}
+      </p>
+    </div>
+  </div>
+
+  @if (dashboard.error()) {
+    <div class="dashboard-message error-message" role="alert">
+      <span>!</span>
+      <div>
+        <strong>Dashboard unavailable</strong>
+        <p>{{ dashboard.error() }}</p>
+      </div>
+    </div>
+  }
+
+  @if (dashboard.loading() && !dashboard.summary()) {
+    <section class="dashboard-loading" aria-label="Loading dashboard">
+      <span></span><span></span><span></span><span></span>
+    </section>
+  } @else if (dashboard.summary(); as summary) {
+    @if (summary.isSuperAdmin) {
+      <section class="stats-grid executive-stats">
+        @for (stat of superAdminStats(); track stat.label) {
+          <article class="stat-card executive-stat">
+            <span class="stat-icon" [class]="stat.tone">{{ stat.icon }}</span>
+            <div>
+              <span>{{ stat.label }}</span
+              ><strong [class.text-value]="stat.label === 'Top Department'">{{ stat.value }}</strong
+              ><small>{{ stat.hint }}</small>
+            </div>
+          </article>
+        }
+      </section>
+
+      <section class="super-grid">
+        <article class="panel insight-panel department-panel">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">CURRENT-YEAR INTAKE</span>
+              <h2>Trainees by department</h2>
+              <p>{{ summary.currentYear }} · {{ summary.currentYearTrainees }} trainees</p>
+            </div>
+            <span class="year-badge">{{ summary.currentYear }}</span>
+          </div>
+          <div class="horizontal-chart" aria-label="Trainee count by department">
+            @for (item of summary.departmentBreakdown; track item.label) {
+              <div class="chart-row">
+                <div class="chart-label">
+                  <strong>{{ item.label }}</strong
+                  ><span>{{ item.count }}</span>
+                </div>
+                <div class="bar-track">
+                  <span
+                    class="department-bar"
+                    [style.width.%]="barWidth(item.count, summary.departmentBreakdown)"
+                  ></span>
+                </div>
+              </div>
+            } @empty {
+              <div class="empty-state">
+                No trainee intake has been recorded for {{ summary.currentYear }}.
+              </div>
+            }
+          </div>
+        </article>
+
+        <article class="panel insight-panel university-panel">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">UNIVERSITY STATISTICS</span>
+              <h2>Students by university</h2>
+              <p>Representation in the {{ summary.currentYear }} intake</p>
+            </div>
+            <strong class="large-total">{{ summary.currentYearTrainees }}</strong>
+          </div>
+          <div class="university-list">
+            @for (item of summary.universityBreakdown; track item.label; let index = $index) {
+              <div class="university-row">
+                <span class="rank">{{ index + 1 }}</span>
+                <div>
+                  <strong>{{ item.label }}</strong
+                  ><span class="mini-track"
+                    ><i [style.width.%]="barWidth(item.count, summary.universityBreakdown)"></i
+                  ></span>
+                </div>
+                <div class="count-cell">
+                  <strong>{{ item.count }}</strong
+                  ><small>{{ percentage(item.count, summary.currentYearTrainees) }}%</small>
+                </div>
+              </div>
+            } @empty {
+              <div class="empty-state">
+                No university statistics are available for {{ summary.currentYear }}.
+              </div>
+            }
+          </div>
+        </article>
+      </section>
+
+      <section class="super-grid lower-grid">
+        <article class="panel departments-card">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">INTERNSHIP COVERAGE</span>
+              <h2>Departments running internships</h2>
+              <p>Departments with at least one trainee this year</p>
+            </div>
+            <span class="metric-pill">{{ summary.internshipDepartments.length }} departments</span>
+          </div>
+          <div class="department-chips">
+            @for (department of summary.internshipDepartments; track department) {
+              <span>{{ department }}</span>
+            } @empty {
+              <div class="empty-state compact">No active internship departments recorded.</div>
+            }
+          </div>
+          <div class="program-list">
+            @for (program of summary.internshipProgramBreakdown; track program.label) {
+              <div>
+                <span>{{ program.label }}</span
+                ><strong>{{ program.count }} trainee{{ program.count === 1 ? '' : 's' }}</strong>
+              </div>
+            }
+          </div>
+        </article>
+
+        <article class="panel task-health-card">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">SYSTEM ACTIVITY</span>
+              <h2>Task health</h2>
+              <p>Live status across all accessible tasks</p>
+            </div>
+            <strong class="completion-score">{{ summary.completionRate }}%</strong>
+          </div>
+          <div class="task-breakdown">
+            @for (item of taskBreakdown(); track item.label) {
+              <div>
+                <span class="status-dot" [attr.data-status]="item.label"></span
+                ><strong>{{ item.label }}</strong
+                ><span>{{ item.count }}</span>
+                <div class="mini-track">
+                  <i
+                    [attr.data-status]="item.label"
+                    [style.width.%]="percentage(item.count, summary.totalTasks)"
+                  ></i>
+                </div>
+              </div>
+            }
+          </div>
+        </article>
+      </section>
+    } @else {
+      <section class="stats-grid">
+        @for (stat of adminStats(); track stat.label) {
+          <article class="stat-card">
+            <span class="stat-icon" [class]="stat.tone">{{ stat.icon }}</span>
+            <div>
+              <span>{{ stat.label }}</span
+              ><strong>{{ stat.value }}</strong
+              ><small>{{ stat.hint }}</small>
+            </div>
+          </article>
+        }
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel live-chart-panel">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">LIVE TASK DATA</span>
+              <h2>Task status overview</h2>
+              <p>{{ summary.scopeLabel }} · {{ summary.totalTasks }} total tasks</p>
+            </div>
+            <strong class="completion-score">{{ summary.completionRate }}%</strong>
+          </div>
+          <div class="horizontal-chart task-chart" aria-label="Live task status distribution">
+            @for (item of taskBreakdown(); track item.label) {
+              <div class="chart-row">
+                <div class="chart-label">
+                  <strong>{{ item.label }}</strong
+                  ><span>{{ item.count }}</span>
+                </div>
+                <div class="bar-track">
+                  <span
+                    [attr.data-status]="item.label"
+                    [style.width.%]="barWidth(item.count, taskBreakdown())"
+                  ></span>
+                </div>
+                <small>{{ percentage(item.count, summary.totalTasks) }}%</small>
+              </div>
+            }
+          </div>
+          <div class="team-summary">
+            <div>
+              <span>Verified email</span><strong>{{ summary.verifiedTrainees }}</strong>
+            </div>
+            <div>
+              <span>Active</span><strong>{{ summary.activeTrainees }}</strong>
+            </div>
+            <div>
+              <span>Inactive</span><strong>{{ summary.inactiveTrainees }}</strong>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel recent-panel">
+          <div class="panel-title">
+            <div>
+              <span class="eyebrow">LATEST ACTIVITY</span>
+              <h2>Recent tasks</h2>
+              <p>Latest assignments and due dates</p>
+            </div>
+            <a routerLink="/admin/tasks">View all</a>
+          </div>
+          <div class="activity-list">
+            @for (task of summary.recentTasks; track task.id) {
+              <a [routerLink]="['/admin/tasks', task.id, 'review']"
+                ><span class="activity-icon">✓</span
+                ><span
+                  ><strong>{{ task.title }}</strong
+                  ><small
+                    >{{ task.traineeName }} · Due {{ task.dueDate | date: 'MMM d, y' }}</small
+                  ></span
+                ><span class="status" [attr.data-status]="task.status">{{ task.status }}</span></a
+              >
+            } @empty {
+              <div class="empty-state">No tasks have been created yet.</div>
+            }
+          </div>
+        </article>
+      </section>
+    }
+  }
+} @else {
+  <section class="welcome-banner">
+    <div>
+      <span class="eyebrow">TRAINEE DASHBOARD</span>
+      <h1>Welcome back, {{ trainee()?.name || 'Trainee' }}</h1>
+      <p>Stay focused on your next task and keep developing the skills for your internship.</p>
+    </div>
+    <div class="program-card">
+      <span>Internship Program</span
+      ><strong>{{ trainee()?.internshipProgram || 'Not assigned yet' }}</strong>
+    </div>
+  </section>
+  <section class="stats-grid trainee-stats">
+    <article class="stat-card">
+      <span class="stat-icon blue">✓</span>
+      <div>
+        <span>Assigned Tasks</span><strong>{{ assignedTasks().length }}</strong
+        ><small>Your complete workload</small>
+      </div>
+    </article>
+    <article class="stat-card">
+      <span class="stat-icon orange">◷</span>
+      <div>
+        <span>Pending</span><strong>{{ pendingTasks().length }}</strong
+        ><small>Waiting to be started</small>
+      </div>
+    </article>
+    <article class="stat-card">
+      <span class="stat-icon violet">↻</span>
+      <div>
+        <span>In Progress</span><strong>{{ inProgressTasks().length }}</strong
+        ><small>Active or needs changes</small>
+      </div>
+    </article>
+    <article class="stat-card">
+      <span class="stat-icon green">●</span>
+      <div>
+        <span>Completed</span><strong>{{ completedTasks().length }}</strong
+        ><small>{{ progress() }}% overall progress</small>
+      </div>
+    </article>
+  </section>
+  <section class="focus-grid">
+    <article class="panel focus-card">
+      <div class="panel-title">
+        <div>
+          <span class="eyebrow">RECOMMENDED NEXT ACTION</span>
+          <h2>What should I start with?</h2>
+        </div>
+        <span class="ai-chip">✦ Smart priority</span>
+      </div>
+      @if (nextTask(); as task) {
+        <div class="focus-task">
+          <div class="focus-topline">
+            <span class="priority" [attr.data-priority]="task.priority"
+              >{{ task.priority }} priority</span
+            ><span class="status" [attr.data-status]="task.status">{{ task.status }}</span>
+          </div>
+          <h3>{{ task.title }}</h3>
+          <p>{{ nextTaskReason() }}</p>
+          <div class="focus-footer">
+            <span>Due {{ task.dueDate | date: 'MMM d, y' }}</span
+            ><a class="primary-button" [routerLink]="['/trainee/tasks', task.id]">Start now →</a>
+          </div>
+        </div>
+      } @else {
+        <div class="all-done">
+          <span>✓</span>
+          <div>
+            <h3>All tasks completed</h3>
+            <p>Great work. Use your learning path below to keep improving.</p>
+          </div>
+        </div>
+      }
+    </article>
+    <article class="panel progress-card">
+      <div class="panel-title">
+        <div>
+          <span class="eyebrow">YOUR PROGRESS</span>
+          <h2>Internship completion</h2>
+        </div>
+        <strong>{{ progress() }}%</strong>
+      </div>
+      <div class="progress-track"><span [style.width.%]="progress()"></span></div>
+      <p>{{ completedTasks().length }} of {{ assignedTasks().length }} assigned tasks completed.</p>
+      <div class="mini-task-list">
+        @for (task of upcomingTasks(); track task.id) {
+          <a [routerLink]="['/trainee/tasks', task.id]"
+            ><span class="task-dot" [attr.data-status]="task.status"></span
+            ><span
+              ><strong>{{ task.title }}</strong
+              ><small>{{ task.dueDate | date: 'MMM d' }} · {{ task.status }}</small></span
+            ><span>›</span></a
+          >
+        } @empty {
+          <span class="empty-upcoming">No open deadlines.</span>
+        }
+      </div>
+      <a class="text-button all-tasks-link" routerLink="/trainee/tasks">Open all tasks →</a>
+    </article>
+  </section>
+  <app-ai-course-suggestions
+    [internshipProgram]="trainee()?.internshipProgram || ''"
+    [traineeId]="trainee()?.id ?? null"
+  />
+}

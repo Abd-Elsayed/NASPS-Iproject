@@ -1,0 +1,108 @@
+<section class="welcome-banner">
+  <div>
+    <span class="eyebrow">TRAINEE DASHBOARD</span>
+    <h1>Welcome back, {{ trainee()?.name || 'Trainee' }}</h1>
+    <p>Stay focused on your next task and keep developing the skills for your internship.</p>
+  </div>
+  <div class="program-card">
+    <span>Internship Program</span
+    ><strong>{{ trainee()?.internshipProgram || 'Not assigned yet' }}</strong>
+  </div>
+</section>
+
+<section class="stats-grid trainee-stats">
+  <article class="stat-card">
+    <span class="stat-icon blue">✓</span>
+    <div>
+      <span>Assigned Tasks</span><strong>{{ assignedTasks().length }}</strong
+      ><small>Your complete workload</small>
+    </div>
+  </article>
+  <article class="stat-card">
+    <span class="stat-icon orange">◷</span>
+    <div>
+      <span>Pending</span><strong>{{ pendingTasks().length }}</strong
+      ><small>Waiting to be started</small>
+    </div>
+  </article>
+  <article class="stat-card">
+    <span class="stat-icon violet">↻</span>
+    <div>
+      <span>In Progress</span><strong>{{ inProgressTasks().length }}</strong
+      ><small>Active or needs changes</small>
+    </div>
+  </article>
+  <article class="stat-card">
+    <span class="stat-icon green">●</span>
+    <div>
+      <span>Completed</span><strong>{{ completedTasks().length }}</strong
+      ><small>{{ progress() }}% overall progress</small>
+    </div>
+  </article>
+</section>
+
+<section class="focus-grid">
+  <article class="panel focus-card">
+    <div class="panel-title">
+      <div>
+        <span class="eyebrow">RECOMMENDED NEXT ACTION</span>
+        <h2>What should I start with?</h2>
+      </div>
+      <span class="ai-chip">✦ Smart priority</span>
+    </div>
+    @if (nextTask(); as task) {
+      <div class="focus-task">
+        <div class="focus-topline">
+          <span class="priority" [attr.data-priority]="task.priority"
+            >{{ task.priority }} priority</span
+          ><span class="status" [attr.data-status]="task.status">{{ task.status }}</span>
+        </div>
+        <h3>{{ task.title }}</h3>
+        <p>{{ nextTaskReason() }}</p>
+        <div class="focus-footer">
+          <span>Due {{ task.dueDate | date: 'MMM d, y' }}</span
+          ><a class="primary-button" [routerLink]="['/trainee/tasks', task.id]">Start now →</a>
+        </div>
+      </div>
+    } @else {
+      <div class="all-done">
+        <span>✓</span>
+        <div>
+          <h3>All tasks completed</h3>
+          <p>Great work. Use your learning path below to keep improving.</p>
+        </div>
+      </div>
+    }
+  </article>
+
+  <article class="panel progress-card">
+    <div class="panel-title">
+      <div>
+        <span class="eyebrow">YOUR PROGRESS</span>
+        <h2>Internship completion</h2>
+      </div>
+      <strong>{{ progress() }}%</strong>
+    </div>
+    <div class="progress-track"><span [style.width.%]="progress()"></span></div>
+    <p>{{ completedTasks().length }} of {{ assignedTasks().length }} assigned tasks completed.</p>
+    <div class="mini-task-list">
+      @for (task of upcomingTasks(); track task.id) {
+        <a [routerLink]="['/trainee/tasks', task.id]"
+          ><span class="task-dot" [attr.data-status]="task.status"></span
+          ><span
+            ><strong>{{ task.title }}</strong
+            ><small>{{ task.dueDate | date: 'MMM d' }} · {{ task.status }}</small></span
+          ><span>›</span></a
+        >
+      } @empty {
+        <span class="empty-upcoming">No open deadlines.</span>
+      }
+    </div>
+    <a class="text-button all-tasks-link" routerLink="/trainee/tasks">Open all tasks →</a>
+  </article>
+</section>
+
+<app-ai-course-suggestions
+  [internshipProgram]="trainee()?.internshipProgram || ''"
+  [traineeId]="trainee()?.id ?? null"
+/>

@@ -1,0 +1,12 @@
+:host {
+  display: block;
+}
+app-pagination {
+  display: block;
+  margin: 12px -24px -24px;
+}
+@media (max-width: 720px) {
+  app-pagination {
+    margin: 12px -18px -18px;
+  }
+}

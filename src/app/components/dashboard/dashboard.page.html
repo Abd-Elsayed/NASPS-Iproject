@@ -1,0 +1,73 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">OVERVIEW</span>
+    <h1>Dashboard</h1>
+    <p>Welcome back. Here is what is happening with your trainee team.</p>
+  </div>
+</div>
+
+<section class="stats-grid">
+  @for (stat of stats(); track stat.label) {
+    <article class="stat-card">
+      <span class="stat-icon" [class]="stat.tone">{{
+        stat.label === 'Trainees'
+          ? '♙'
+          : stat.label === 'Tasks'
+            ? '✓'
+            : stat.label === 'Pending Tasks'
+              ? '◷'
+              : '●'
+      }}</span>
+      <div>
+        <span>{{ stat.label }}</span
+        ><strong>{{ stat.value }}</strong
+        ><small>{{ stat.hint }}</small>
+      </div>
+    </article>
+  }
+</section>
+
+<section class="dashboard-grid">
+  <article class="panel chart-panel">
+    <div class="panel-title">
+      <div>
+        <h2>Tasks Overview</h2>
+        <p>Monthly activity for the current cycle</p>
+      </div>
+      <span class="legend"><i></i> Completed <i></i> Pending</span>
+    </div>
+    <div class="chart" aria-label="Illustrative monthly task chart">
+      @for (height of [34, 48, 42, 68, 75, 88]; track $index) {
+        <div class="chart-column">
+          <span class="bar completed" [style.height.%]="height"></span
+          ><span
+            class="bar pending"
+            [style.height.%]="Math.max(18, height - 22 + ($index % 2) * 16)"
+          ></span
+          ><small>{{ ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'][$index] }}</small>
+        </div>
+      }
+    </div>
+  </article>
+  <article class="panel recent-panel">
+    <div class="panel-title">
+      <div>
+        <h2>Recent Tasks</h2>
+        <p>Latest activity and due dates</p>
+      </div>
+      <a routerLink="/admin/tasks">View all</a>
+    </div>
+    <div class="activity-list">
+      @for (task of recent(); track task.id) {
+        <a [routerLink]="['/admin/tasks', task.id, 'review']">
+          <span class="activity-icon">✓</span>
+          <span
+            ><strong>{{ task.title }}</strong
+            ><small>Due {{ task.dueDate | date: 'MMM d, y' }}</small></span
+          >
+          <span class="status" [attr.data-status]="task.status">{{ task.status }}</span>
+        </a>
+      }
+    </div>
+  </article>
+</section>

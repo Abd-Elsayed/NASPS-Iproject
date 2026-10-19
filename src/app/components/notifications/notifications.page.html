@@ -1,0 +1,41 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">INBOX</span>
+    <h1>Notifications</h1>
+    <p>Follow task updates and system announcements.</p>
+  </div>
+  <button class="text-button" (click)="markAllRead()">Mark all as read</button>
+</div>
+<section class="panel notification-panel">
+  <div class="tabs">
+    @for (item of ['All', 'Unread', 'Tasks', 'System']; track item) {
+      <button [class.active]="tab() === item" (click)="tab.set($any(item)); page.set(1)">
+        {{ item }}
+      </button>
+    }
+  </div>
+  <div class="notification-list">
+    @for (item of paginated(); track item.id) {
+      <article [class.unread]="!item.read" (click)="open(item.id, item.read)">
+        <span class="notification-icon" [class.system]="item.category === 'System'">{{
+          item.category === 'Tasks' ? '▣' : '⚙'
+        }}</span>
+        <div>
+          <strong>{{ item.message }}</strong
+          ><span>{{ timeAgo(item.time) }}</span>
+        </div>
+        @if (!item.read) {
+          <i></i>
+        }
+      </article>
+    } @empty {
+      <div class="empty">Nothing to show in this tab.</div>
+    }
+  </div>
+  <app-pagination
+    [totalItems]="filtered().length"
+    [pageSize]="pageSize"
+    [page]="page()"
+    (pageChange)="page.set($event)"
+  />
+</section>
